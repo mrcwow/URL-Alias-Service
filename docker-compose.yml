@@ -1,0 +1,31 @@
+services:
+  # Сервис для Flask приложения
+  flask-app:
+    build: .
+    container_name: app
+    ports:
+      - "127.0.0.1:${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      - mysql-db
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  # Сервис для MySQL
+  mysql-db:
+    image: mysql:9.3.0
+    container_name: db
+    env_file:
+      - .env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+    driver: bridge
