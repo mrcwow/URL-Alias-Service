@@ -13,7 +13,7 @@ stop:
 
 wait-db:
 	@until docker compose exec mysql-db \
-		mysql -u root -p$${MYSQL_ROOT_PASSWORD} -e "SELECT 1" 2>/dev/null; \
+		sh -c 'mysql -u root -p"$$MYSQL_ROOT_PASSWORD" -e "SELECT 1"' 2>/dev/null; \
 	do echo "Waiting for MySQL... Timeout 5 seconds"; sleep 5; done
 
 migrate:
