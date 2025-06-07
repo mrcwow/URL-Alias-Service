@@ -119,7 +119,11 @@ class URLRedirect(Resource):
             db.session.rollback()
             abort(500, f"Database error: {str(e)}")
         
-        return redirect(url.orig_url)
+        orig_url = url.orig_url
+        if not orig_url.startswith(("http://", "https://")):
+            orig_url = "http://" + orig_url
+
+        return redirect(orig_url)
 
 @api.route("/<short_code>/deactivate")
 class URLDeactivate(Resource):
